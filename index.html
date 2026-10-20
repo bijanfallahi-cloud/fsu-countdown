@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FSU COM | Match Day & Christmas Countdown</title>
+  <!-- Collegiate serif heading & tabular monospaced numbers -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@700;800&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            fsu: {
+              garnet: '#782F40',
+              deepGarnet: '#491823',
+              darkest: '#1f090e',
+              gold: '#CEB888',
+              brightGold: '#E6D7B2',
+              goldAccent: '#F3E5AB'
+            }
+          },
+          fontFamily: {
+            serifHeading: ['Cinzel', 'Georgia', 'serif'],
+            digit: ['Outfit', 'Inter', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+            sans: ['Inter', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    /* Strict 16:9 Zero-Scroll Constraint */
+    html, body {
+      width: 100vw;
+      height: 100vh;
+      max-height: 100vh;
+      overflow: hidden;
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      user-select: none;
+    }
+
+    /* FSU Wallpaper: Deep Garnet Radial Gradients with Subtle Stipple Texture */
+    body {
+      background-color: #1a060a;
+      background-image: 
+        radial-gradient(circle at 50% 20%, rgba(120, 47, 64, 0.72) 0%, rgba(73, 24, 35, 0.95) 55%, #130306 100%),
+        radial-gradient(circle at 50% 85%, rgba(206, 184, 136, 0.1) 0%, transparent 60%);
+      background-attachment: fixed;
+      color: #FFFFFF;
+      font-family: 'Inter', sans-serif;
+    }
+
+    /* Geometric Watermark Accent */
+    .fsu-texture {
+      background-image: radial-gradient(rgba(206, 184, 136, 0.08) 1.5px, transparent 1.5px);
+      background-size: 28px 28px;
+    }
+
+    /* Glass Panels strictly sized with viewport heights */
+    .glass-card {
+      background: linear-gradient(135deg, rgba(58, 17, 26, 0.78) 0%, rgba(28, 8, 13, 0.9) 100%);
+      border: 1.5px solid rgba(206, 184, 136, 0.38);
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.55), 
+                  inset 0 1px 0 rgba(206, 184, 136, 0.35),
+                  0 0 20px rgba(120, 47, 64, 0.25);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+
+    /* Split-flap aesthetic digit box */
+    .digit-box {
+      background: linear-gradient(180deg, rgba(24, 6, 11, 0.95) 0%, rgba(12, 3, 6, 0.98) 100%);
+      border: 1px solid rgba(206, 184, 136, 0.42);
+      box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.08),
+                  0 8px 20px rgba(0, 0, 0, 0.7);
+      position: relative;
+    }
+
+    .digit-box::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 50%;
+      height: 1px;
+      background: rgba(206, 184, 136, 0.22);
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.85);
+      pointer-events: none;
+    }
+
+    /* Metallic Gold Text Shimmer */
+    .gold-gradient-text {
+      background: linear-gradient(135deg, #FFF6E0 0%, #CEB888 50%, #9E834D 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* Fluid Text Scaling to guarantee no overflow on 1080p and 4K displays */
+    .countdown-digit {
+      font-size: clamp(2.4rem, 4.4vw, 5.2rem);
+      line-height: 1;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .countdown-label {
+      font-size: clamp(0.65rem, 0.9vw, 1.1rem);
+      letter-spacing: 0.15em;
+    }
+
+    .card-title {
+      font-size: clamp(1.2rem, 2.2vw, 2.6rem);
+      line-height: 1.15;
+    }
+
+    .card-sub {
+      font-size: clamp(0.7rem, 0.95vw, 1.1rem);
+    }
+
+    .badge-text {
+      font-size: clamp(0.55rem, 0.7vw, 0.85rem);
+    }
+
+    /* Thin Gold Center Divider */
+    .gold-divider {
+      background: linear-gradient(90deg, transparent 0%, #CEB888 50%, transparent 100%);
+      height: 1.5px;
+      opacity: 0.55;
+    }
+  </style>
+</head>
+<body class="fsu-texture flex flex-col justify-between w-screen h-screen p-3 sm:p-4 lg:p-5">
+
+  <!-- TOP HEADER (Height: ~7vh) -->
+  <header class="w-full max-w-7xl mx-auto flex items-center justify-between px-3 py-1.5 border-b border-fsu-gold/30 shrink-0">
+    <!-- FSU COM Identity -->
+    <div class="flex items-center space-x-3">
+      <div class="w-8 h-8 md:w-9 md:md:h-9 rounded-full border-2 border-fsu-gold flex items-center justify-center bg-fsu-garnet shadow">
+        <!-- Torch Vector Seal -->
+        <svg class="w-5 h-5 text-fsu-gold" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M12 2L9.5 8H14.5L12 2Z" />
+          <path d="M7 10L6 14H18L17 10H7Z" />
+          <path d="M9 15V22H15V15H9Z" />
+        </svg>
+      </div>
+      <div>
+        <h1 class="text-xs md:text-sm font-bold tracking-widest uppercase font-serifHeading text-fsu-gold">
+          Florida State University
+        </h1>
+        <p class="text-[10px] md:text-xs text-gray-300 font-sans tracking-wide">
+          College of Medicine • Daytona Beach Regional Campus
+        </p>
+      </div>
+    </div>
+
+    <!-- Live Synced Eastern Time Clock -->
+    <div class="flex items-center space-x-3 text-xs">
+      <div class="flex items-center space-x-2 bg-black/60 px-3 py-1 rounded-full border border-fsu-gold/40">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+        <span class="font-mono text-fsu-brightGold tracking-wider" id="current-clock">--:--:-- ET</span>
+      </div>
+      <button id="fullscreen-btn" title="Toggle Fullscreen" class="hidden sm:inline-flex items-center text-fsu-gold hover:text-white p-1 rounded border border-fsu-gold/30 hover:border-fsu-gold transition">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-5h-4m4 0v4m0 0l-5-5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- MAIN VIEWPORT SPLIT CONTAINER (Height: ~86vh, 2 Equal Flex Cards) -->
+  <main class="w-full max-w-7xl mx-auto flex-1 flex flex-col justify-between my-2 gap-2.5 overflow-hidden">
+
+    <!-- TOP SECTION: MATCH DAY (Takes 50% flex height) -->
+    <section class="glass-card flex-1 rounded-xl p-3 sm:p-4 md:p-5 flex flex-col justify-center relative overflow-hidden">
+      <!-- Gold Corner Accents -->
+      <div class="absolute top-0 left-0 w-6 h-6 border-t-2 border-l-2 border-fsu-gold rounded-tl-lg opacity-75"></div>
+      <div class="absolute top-0 right-0 w-6 h-6 border-t-2 border-r-2 border-fsu-gold rounded-tr-lg opacity-75"></div>
+
+      <!-- Section Title & Target -->
+      <div class="text-center mb-2 sm:mb-3">
+        <span class="badge-text inline-block px-3 py-0.5 rounded-full bg-fsu-garnet/90 border border-fsu-gold/50 text-fsu-brightGold font-semibold uppercase tracking-widest mb-1">
+          National Resident Matching Program
+        </span>
+        <h2 class="card-title font-extrabold font-serifHeading tracking-tight text-white">
+          FSU College of Medicine <span class="gold-gradient-text">Match Day</span>
+        </h2>
+        <p class="card-sub text-fsu-brightGold/90 font-serifHeading tracking-wide">
+          Friday, March 19, 2027 • 12:00:00 PM EDT (Residency Reveal)
+        </p>
+      </div>
+
+      <!-- Digits Row -->
+      <div class="grid grid-cols-4 gap-2 sm:gap-4 md:gap-6 max-w-4xl mx-auto w-full">
+        <!-- Days -->
+        <div class="flex flex-col items-center">
+          <div class="digit-box w-full py-2 sm:py-3.5 md:py-4 rounded-lg sm:rounded-xl flex items-center justify-center">
+            <span id="match-days" class="countdown-digit font-digit font-bold text-white">--</span>
+          </div>
+          <span class="countdown-label mt-1 uppercase text-fsu-gold font-serifHeading font-bold">Days</span>
+        </div>
+
+        <!-- Hours -->
+        <div class="flex flex-col items-center">
+          <div class="digit-box w-full py-2 sm:py-3.5 md:py-4 rounded-lg sm:rounded-xl flex items-center justify-center">
+            <span id="match-hours" class="countdown-digit font-digit font-bold text-white">--</span>
+          </div>
+          <span class="countdown-label mt-1 uppercase text-fsu-gold font-serifHeading font-bold">Hours</span>
+        </div>
+
+        <!-- Minutes -->
+        <div class="flex flex-col items-center">
+          <div class="digit-box w-full py-2 sm:py-3.5 md:py-4 rounded-lg sm:rounded-xl flex items-center justify-center">
+            <span id="match-minutes" class="countdown-digit font-digit font-bold text-white">--</span>
+          </div>
+          <span class="countdown-label mt-1 uppercase text-fsu-gold font-serifHeading font-bold">Minutes</span>
+        </div>
+
+        <!-- Seconds -->
+        <div class="flex flex-col items-center">
+          <div class="digit-box w-full py-2 sm:py-3.5 md:py-4 rounded-lg sm:rounded-xl flex items-center justify-center border-fsu-gold/80">
+            <span id="match-seconds" class="countdown-digit font-digit font-bold text-fsu-goldAccent">--</span>
+          </div>
+          <span class="countdown-label mt-1 uppercase text-fsu-goldAccent font-serifHeading font-bold">Seconds</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Subtle Centered Ribbon Divider -->
+    <div class="gold-divider max-w-2xl mx-auto w-full shrink-0"></div>
+
+    <!-- BOTTOM SECTION: CHRISTMAS (Takes 50% flex height) -->
+    <section class="glass-card flex-1 rounded-xl p-3 sm:p-4 md:p-5 flex flex-col justify-center relative overflow-hidden">
+      <!-- Gold Corner Accents -->
+      <div class="absolute bottom-0 left-0 w-6 h-6 border-b-2 border-l-2 border-fsu-gold rounded-bl-lg opacity-75"></div>
+      <div class="absolute bottom-0 right-0 w-6 h-6 border-b-2 border-r-2 border-fsu-gold rounded-br-lg opacity-75"></div>
+
+      <!-- Section Title & Target -->
+      <div class="text-center mb-2 sm:mb-3">
+        <span class="badge-text inline-block px-3 py-0.5 rounded-full bg-fsu-garnet/90 border border-fsu-gold/50 text-fsu-brightGold font-semibold uppercase tracking-widest mb-1">
+          Holiday Celebration & Winter Recess
+        </span>
+        <h2 class="card-title font-extrabold font-serifHeading tracking-tight text-white">
+          Countdown to <span class="gold-gradient-text">Christmas</span>
+        </h2>
+        <p class="card-sub text-fsu-brightGold/90 font-serifHeading tracking-wide">
+          Friday, December 25, 2026 • 12:00:00 AM EST (Midnight)
+        </p>
+      </div>
+
+      <!-- Digits Row -->
+      <div class="grid grid-cols-4 gap-2 sm:gap-4 md:gap-6 max-w-4xl mx-auto w-full">
+        <!-- Days -->
+        <div class="flex flex-col items-center">
+          <div class="digit-box w-full py-2 sm:py-3.5 md:py-4 rounded-lg sm:rounded-xl flex items-center justify-center">
+            <span id="xmas-days" class="countdown-digit font-digit font-bold text-white">--</span>
+          </div>
+          <span class="countdown-label mt-1 uppercase text-fsu-gold font-serifHeading font-bold">Days</span>
+        </div>
+
+        <!-- Hours -->
+        <div class="flex flex-col items-center">
+          <div class="digit-box w-full py-2 sm:py-3.5 md:py-4 rounded-lg sm:rounded-xl flex items-center justify-center">
+            <span id="xmas-hours" class="countdown-digit font-digit font-bold text-white">--</span>
+          </div>
+          <span class="countdown-label mt-1 uppercase text-fsu-gold font-serifHeading font-bold">Hours</span>
+        </div>
+
+        <!-- Minutes -->
+        <div class="flex flex-col items-center">
+          <div class="digit-box w-full py-2 sm:py-3.5 md:py-4 rounded-lg sm:rounded-xl flex items-center justify-center">
+            <span id="xmas-minutes" class="countdown-digit font-digit font-bold text-white">--</span>
+          </div>
+          <span class="countdown-label mt-1 uppercase text-fsu-gold font-serifHeading font-bold">Minutes</span>
+        </div>
+
+        <!-- Seconds -->
+        <div class="flex flex-col items-center">
+          <div class="digit-box w-full py-2 sm:py-3.5 md:py-4 rounded-lg sm:rounded-xl flex items-center justify-center border-fsu-gold/80">
+            <span id="xmas-seconds" class="countdown-digit font-digit font-bold text-fsu-goldAccent">--</span>
+          </div>
+          <span class="countdown-label mt-1 uppercase text-fsu-goldAccent font-serifHeading font-bold">Seconds</span>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- SLENDER FOOTER (Height: ~5vh) -->
+  <footer class="w-full max-w-7xl mx-auto flex items-center justify-between px-3 py-1 border-t border-fsu-gold/25 text-[10px] sm:text-xs text-gray-300 shrink-0">
+    <div class="font-serifHeading font-semibold tracking-wide text-fsu-gold">
+      FSU College of Medicine • Vires, Artes, Mores
+    </div>
+    <div class="flex items-center space-x-2 text-gray-400 font-sans">
+      <span>Auto-synced to America/New_York (Daytona Beach)</span>
+    </div>
+  </footer>
+
+  <!-- Precision Time Calculation Engine -->
+  <script>
+    // Strict Target Timestamps with Explicit Eastern Time Offsets
+    // Match Day 2027: Friday, March 19, 2027 12:00:00 PM EDT (UTC-4)
+    const MATCH_DAY_TARGET = new Date('2027-03-19T12:00:00-04:00').getTime();
+
+    // Christmas 2026: Friday, December 25, 2026 12:00:00 AM EST (UTC-5)
+    const CHRISTMAS_TARGET = new Date('2026-12-25T00:00:00-05:00').getTime();
+
+    // Cached Digit Elements
+    const elMatchD = document.getElementById('match-days');
+    const elMatchH = document.getElementById('match-hours');
+    const elMatchM = document.getElementById('match-minutes');
+    const elMatchS = document.getElementById('match-seconds');
