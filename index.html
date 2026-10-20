@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>FSU College of Medicine | Countdown Timers</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -41,13 +41,11 @@
       padding: 1.5vh 2.5vw;
     }
 
-    /* Subtle background grid */
     body::before {
       content: "";
       position: absolute;
       inset: 0;
-      background-image: 
-        radial-gradient(var(--gold-dark) 1px, transparent 1px);
+      background-image: radial-gradient(var(--gold-dark) 1px, transparent 1px);
       background-size: 32px 32px;
       opacity: 0.15;
       pointer-events: none;
@@ -239,7 +237,6 @@
       box-shadow: inset 0 2px 6px rgba(0,0,0,0.8), 0 4px 12px rgba(0,0,0,0.5);
     }
 
-    /* Flip line effect */
     .digit-box::after {
       content: "";
       position: absolute;
@@ -304,7 +301,6 @@
   </header>
 
   <main>
-    <!-- MATCH DAY COUNTDOWN -->
     <section class="card">
       <div class="card-header">
         <span class="card-tag">National Resident Matching Program</span>
@@ -313,25 +309,24 @@
       </div>
       <div class="timer-grid">
         <div class="timer-unit">
-          <div class="digit-box"><span class="digit-value" id="md-days">00</span></div>
+          <div class="digit-box"><span class="digit-value" id="md-days">--</span></div>
           <span class="unit-label">Days</span>
         </div>
         <div class="timer-unit">
-          <div class="digit-box"><span class="digit-value" id="md-hours">00</span></div>
+          <div class="digit-box"><span class="digit-value" id="md-hours">--</span></div>
           <span class="unit-label">Hours</span>
         </div>
         <div class="timer-unit">
-          <div class="digit-box"><span class="digit-value" id="md-mins">00</span></div>
+          <div class="digit-box"><span class="digit-value" id="md-mins">--</span></div>
           <span class="unit-label">Minutes</span>
         </div>
         <div class="timer-unit unit-seconds">
-          <div class="digit-box"><span class="digit-value" id="md-secs">00</span></div>
+          <div class="digit-box"><span class="digit-value" id="md-secs">--</span></div>
           <span class="unit-label">Seconds</span>
         </div>
       </div>
     </section>
 
-    <!-- CHRISTMAS COUNTDOWN -->
     <section class="card">
       <div class="card-header">
         <span class="card-tag">Holiday Celebration & Winter Recess</span>
@@ -340,19 +335,19 @@
       </div>
       <div class="timer-grid">
         <div class="timer-unit">
-          <div class="digit-box"><span class="digit-value" id="xmas-days">00</span></div>
+          <div class="digit-box"><span class="digit-value" id="xmas-days">--</span></div>
           <span class="unit-label">Days</span>
         </div>
         <div class="timer-unit">
-          <div class="digit-box"><span class="digit-value" id="xmas-hours">00</span></div>
+          <div class="digit-box"><span class="digit-value" id="xmas-hours">--</span></div>
           <span class="unit-label">Hours</span>
         </div>
         <div class="timer-unit">
-          <div class="digit-box"><span class="digit-value" id="xmas-mins">00</span></div>
+          <div class="digit-box"><span class="digit-value" id="xmas-mins">--</span></div>
           <span class="unit-label">Minutes</span>
         </div>
         <div class="timer-unit unit-seconds">
-          <div class="digit-box"><span class="digit-value" id="xmas-secs">00</span></div>
+          <div class="digit-box"><span class="digit-value" id="xmas-secs">--</span></div>
           <span class="unit-label">Seconds</span>
         </div>
       </div>
@@ -365,23 +360,83 @@
   </footer>
 
   <script>
-    // Exact Target Epoch Timestamps in UTC Milliseconds:
-    // Match Day 2027: March 19, 2027, 12:00:00 EDT = 16:00:00 UTC
-    var MATCH_DAY_TARGET = Date.UTC(2027, 2, 19, 16, 0, 0);
+    var MATCH_DAY_TARGET = new Date('2027-03-19T12:00:00-04:00').getTime();
+    var XMAS_TARGET = new Date('2026-12-25T00:00:00-05:00').getTime();
 
-    // Christmas 2026: December 25, 2026, 00:00:00 EST = 05:00:00 UTC
-    var XMAS_TARGET = Date.UTC(2026, 11, 25, 5, 0, 0);
-
-    function padZero(num) {
-      return (num < 10 ? '0' : '') + num;
+    function formatNumber(n) {
+      return n < 10 ? '0' + n : '' + n;
     }
 
-    function calculateRemaining(targetMs, nowMs) {
-      var diff = targetMs - nowMs;
+    function calculateDiff(targetTime, currentTime) {
+      var diff = targetTime - currentTime;
       if (diff <= 0) {
-        return { days: '00', hours: '00', minutes: '00', seconds: '00' };
+        return { d: '00', h: '00', m: '00', s: '00' };
       }
-      var s = Math.floor(diff / 1000);
-      var days = Math.floor(s / 86400);
-      s %= 86400;
-      var hours = Math.floor(s / 360
+      var totalSeconds = Math.floor(diff / 1000);
+      var days = Math.floor(totalSeconds / 86400);
+      var rem = totalSeconds % 86400;
+      var hours = Math.floor(rem / 3600);
+      rem = rem % 3600;
+      var minutes = Math.floor(rem / 60);
+      var seconds = rem % 60;
+
+      return {
+        d: formatNumber(days),
+        h: formatNumber(hours),
+        m: formatNumber(minutes),
+        s: formatNumber(seconds)
+      };
+    }
+
+    function refreshDisplay() {
+      var now = Date.now();
+
+      var md = calculateDiff(MATCH_DAY_TARGET, now);
+      var elMdDays = document.getElementById('md-days');
+      if (elMdDays) {
+        elMdDays.textContent = md.d;
+        document.getElementById('md-hours').textContent = md.h;
+        document.getElementById('md-mins').textContent = md.m;
+        document.getElementById('md-secs').textContent = md.s;
+      }
+
+      var xmas = calculateDiff(XMAS_TARGET, now);
+      var elXmasDays = document.getElementById('xmas-days');
+      if (elXmasDays) {
+        elXmasDays.textContent = xmas.d;
+        document.getElementById('xmas-hours').textContent = xmas.h;
+        document.getElementById('xmas-mins').textContent = xmas.m;
+        document.getElementById('xmas-secs').textContent = xmas.s;
+      }
+
+      var elClock = document.getElementById('headerClock');
+      if (elClock) {
+        try {
+          var estString = new Date().toLocaleTimeString('en-US', {
+            timeZone: 'America/New_York',
+            hour12: true,
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit'
+          });
+          elClock.textContent = estString + ' ET';
+        } catch (err) {
+          var d = new Date();
+          elClock.textContent = formatNumber(d.getHours()) + ':' + formatNumber(d.getMinutes()) + ':' + formatNumber(d.getSeconds()) + ' ET';
+        }
+      }
+    }
+
+    function toggleFullScreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(function() {});
+      } else if (document.exitFullscreen) {
+        document.exitFullscreen();
+      }
+    }
+
+    refreshDisplay();
+    setInterval(refreshDisplay, 1000);
+  </script>
+</body>
+</html>
