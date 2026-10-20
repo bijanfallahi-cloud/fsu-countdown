@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FSU College of Medicine | Dual Stage Countdown</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --garnet-deep: #3A0C16;
+      --garnet-primary: #782F40;
+      --gold-primary: #CEB888;
+      --gold-bright: #F5E6C8;
+      --gold-dark: #8F7645;
+      --text-white: #FFFFFF;
+      --xmas-green: #184227;
+      --xmas-green-border: rgba(72, 168, 110, 0.45);
+      --card-border: rgba(206, 184, 136, 0.45);
+      --digit-box-bg: rgba(14, 4, 6, 0.88);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+    }
+
+    body {
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      background: radial-gradient(circle at center, #4E1824 0%, var(--garnet-deep) 75%, #140307 100%);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      color: var(--text-white);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 1.2vh 2vw;
+    }
+
+    body::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(var(--gold-dark) 1px, transparent 1px);
+      background-size: 32px 32px;
+      opacity: 0.12;
+      pointer-events: none;
+    }
+
+    header {
+      position: relative;
+      z-index: 2;
+      height: 5.5vh;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(206, 184, 136, 0.25);
+      padding-bottom: 0.4vh;
+    }
+
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 0.8vw;
+    }
+
+    .torch-badge {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: 1.5px solid var(--gold-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--gold-bright);
+      font-family: 'Cinzel', serif;
+      font-weight: 700;
+      font-size: 13px;
+      background: rgba(0, 0, 0, 0.35);
+    }
+
+    .brand-text h1 {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(0.75rem, 1vw, 1.2rem);
+      letter-spacing: 2px;
+      font-weight: 700;
+      color: var(--gold-bright);
+      line-height: 1.1;
+    }
+
+    .brand-text p {
+      font-size: clamp(0.55rem, 0.7vw, 0.85rem);
+      color: #D3C4A5;
+      letter-spacing: 0.5px;
+    }
+
+    .status-group {
+      display: flex;
+      align-items: center;
+      gap: 1vw;
+    }
+
+    .live-clock {
+      font-family: 'Inter', monospace;
+      font-size: clamp(0.65rem, 0.8vw, 0.95rem);
+      color: var(--gold-primary);
+      background: rgba(0, 0, 0, 0.45);
+      padding: 0.3vh 0.7vw;
+      border-radius: 4px;
+      border: 1px solid rgba(206, 184, 136, 0.25);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .live-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #4ade80;
+      box-shadow: 0 0 8px #4ade80;
+    }
+
+    .fs-button {
+      background: transparent;
+      border: 1px solid rgba(206, 184, 136, 0.4);
+      color: var(--gold-primary);
+      padding: 0.3vh 0.6vw;
+      border-radius: 4px;
+      font-size: clamp(0.6rem, 0.7vw, 0.85rem);
+      cursor: pointer;
+    }
+
+    main {
+      position: relative;
+      z-index: 2;
+      height: 89vh;
+      display: flex;
+      flex-direction: column;
+      gap: 1.4vh;
+      justify-content: space-between;
+    }
+
+    /* TOP HALF: 3 HOLIDAY CARDS (Takes 42% height) */
+    .top-half-grid {
+      height: 42%;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.2vw;
+    }
+
+    .holiday-card {
+      background: linear-gradient(170deg, rgba(24, 66, 39, 0.78) 0%, rgba(14, 38, 23, 0.9) 100%);
+      border: 1.5px solid var(--xmas-green-border);
+      border-radius: 10px;
+      padding: 1vh 1vw;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+    }
+
+    .holiday-card.xmas-main {
+      background: linear-gradient(170deg, rgba(32, 85, 50, 0.85) 0%, rgba(100, 18, 30, 0.75) 100%);
+      border-color: rgba(235, 87, 87, 0.65);
+      box-shadow: 0 0 16px rgba(180, 40, 50, 0.25);
+    }
+
+    .holiday-card::before {
+      content: "";
+      position: absolute;
+      top: 4px;
+      left: 4px;
+      right: 4px;
+      bottom: 4px;
+      border: 1px dashed rgba(206, 184, 136, 0.25);
+      border-radius: 7px;
+      pointer-events: none;
+    }
+
+    .holiday-header {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      gap: 0.2vh;
+    }
+
+    .holiday-badge {
+      font-size: clamp(0.5rem, 0.6vw, 0.75rem);
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: #FFECC0;
+      font-weight: 700;
+      background: rgba(0, 0, 0, 0.35);
+      padding: 0.2vh 0.6vw;
+      border-radius: 50px;
+      align-self: center;
+      border: 1px solid rgba(255, 236, 192, 0.3);
+    }
+
+    .holiday-title {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(0.85rem, 1.25vw, 1.5rem);
+      font-weight: 800;
+      color: #FFFFFF;
+      letter-spacing: 1px;
+      line-height: 1.1;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.6);
+    }
+
+    .holiday-date {
+      font-size: clamp(0.55rem, 0.68vw, 0.8rem);
+      color: #E0EEDB;
+      font-weight: 500;
+    }
+
+    .holiday-timer {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.5vw;
+      width: 100%;
+    }
+
+    .mini-box {
+      background: rgba(6, 18, 10, 0.85);
+      border: 1px solid rgba(206, 184, 136, 0.3);
+      border-radius: 6px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 0.6vh 0;
+    }
+
+    .mini-digit {
+      font-family: 'Cinzel', monospace;
+      font-size: clamp(1.1rem, 1.8vw, 2.2rem);
+      font-weight: 800;
+      color: #FFFFFF;
+      line-height: 1;
+    }
+
+    .mini-label {
+      font-size: clamp(0.48rem, 0.55vw, 0.7rem);
+      color: var(--gold-primary);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-weight: 700;
+      margin-top: 0.3vh;
+    }
+
+    /* BOTTOM HALF: HERO MATCH DAY (Takes 56% height) */
+    .hero-match-card {
+      height: 56%;
+      background: linear-gradient(135deg, rgba(28, 8, 13, 0.95) 0%, rgba(55, 14, 25, 0.9) 100%);
+      border: 2px solid var(--gold-primary);
+      border-radius: 12px;
+      padding: 1.5vh 2.5vw;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.6), inset 0 0 25px rgba(206, 184, 136, 0.08);
+    }
+
+    .match-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      height: 100%;
+    }
+
+    .match-header {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4vh;
+    }
+
+    .match-tag {
+      font-size: clamp(0.6rem, 0.75vw, 0.9rem);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--gold-bright);
+      font-weight: 800;
+      background: rgba(206, 184, 136, 0.18);
+      display: inline-block;
+      align-self: flex-start;
+      padding: 0.3vh 1vw;
+      border-radius: 50px;
+      border: 1px solid var(--gold-primary);
+    }
+
+    .match-title {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(1.4rem, 2.6vw, 3.2rem);
+      font-weight: 900;
+      color: var(--gold-bright);
+      letter-spacing: 1.5px;
+      line-height: 1.05;
+      text-shadow: 0 3px 12px rgba(0,0,0,0.9);
+    }
+
+    .match-subtitle {
+      font-size: clamp(0.7rem, 0.95vw, 1.15rem);
+      color: #EFE4D0;
+      letter-spacing: 0.8px;
+    }
+
+    /* ENLARGED PROMINENT DIGITS */
+    .hero-timer-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.5vw;
+      width: 100%;
+      max-width: 820px;
+      margin-top: 0.5vh;
+    }
+
+    .hero-box {
+      background: var(--digit-box-bg);
+      border: 2px solid rgba(206, 184, 136, 0.5);
+      border-radius: 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 1.2vh 0;
+      box-shadow: inset 0 3px 10px rgba(0,0,0,0.9), 0 6px 16px rgba(0,0,0,0.6);
+      position: relative;
+    }
+
+    .hero-box::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 50%;
+      height: 1px;
+      background: rgba(206, 184, 136, 0.28);
+    }
+
+    .hero-digit {
+      font-family: 'Cinzel', monospace;
+      font-size: clamp(2.6rem, 5.2vw, 6rem);
+      font-weight: 900;
+      color: #FFFFFF;
+      line-height: 1;
+      letter-spacing: 2px;
+    }
+
+    .hero-box.unit-seconds .hero-digit {
+      color: var(--gold-bright);
+    }
+
+    .hero-label {
+      font-size: clamp(0.65rem, 0.85vw, 1.1rem);
+      text-transform: uppercase;
+      letter-spacing: 2.5px;
+      color: var(--gold-primary);
+      font-weight: 800;
+      margin-top: 0.6vh;
+    }
+
+    /* SILHOUETTE CLIPART */
+    .match-art-container {
+      width: clamp(140px, 18vw, 250px);
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding-left: 1.5vw;
+    }
+
+    .envelope-svg {
+      width: 100%;
+      height: auto;
+      max-height: 90%;
+      filter: drop-shadow(0 6px 14px rgba(0,0,0,0.8));
+    }
+
+    footer {
+      position: relative;
+      z-index: 2;
+      height: 3.2vh;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 1px solid rgba(206, 184, 136, 0.2);
+      font-size: clamp(0.55rem, 0.65vw, 0.8rem);
+      color: #B5A480;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="brand-group">
+      <div class="torch-badge">FSU</div>
+      <div class="brand-text">
+        <h1>FLORIDA STATE UNIVERSITY</h1>
+        <p>College of Medicine • Daytona Beach Regional Campus</p>
+      </div>
+    </div>
+    <div class="status-group">
+      <div class="live-clock">
+        <span class="live-dot"></span>
+        <span id="headerClock">--:--:-- ET</span>
+      </div>
+      <button class="fs-button" onclick="toggleFullScreen()">[ ⛶ Fullscreen ]</button>
+    </div>
+  </header>
+
+  <main>
+    <!-- TOP HALF: 3 HOLIDAY COUNTDOWNS -->
+    <div class="top-half-grid">
+      
+      <!-- 1. WINTER BREAK -->
+      <section class="holiday-card">
+        <div class="holiday-header">
+          <span class="holiday-badge">Recess Begins</span>
+          <h2 class="holiday-title">WINTER BREAK</h2>
+          <p class="holiday-date">FRI, DEC 18, 2026 • 5:00 PM</p>
+        </div>
+        <div class="holiday-timer">
+          <div class="mini-box"><span class="mini-digit" id="break-days">--</span><span class="mini-label">Days</span></div>
+          <div class="mini-box"><span class="mini-digit" id="break-hours">--</span><span class="mini-label">Hrs</span></div>
+          <div class="mini-box"><span class="mini-digit" id="break-mins">--</span><span class="mini-label">Mins</span></div>
+          <div class="mini-box"><span class="mini-digit" id="break-secs">--</span><span class="mini-label">Secs</span></div>
+        </div>
+      </section>
+
+      <!-- 2. CHRISTMAS -->
+      <section class="holiday-card xmas-main">
+        <div class="holiday-header">
+          <span class="holiday-badge" style="background: rgba(180, 40, 50, 0.45); border-color: #FFA5A5;">Holiday Celebration</span>
+          <h2 class="holiday-title" style="color: #FFF2D1;">CHRISTMAS</h2>
+          <p class="holiday-date">FRI, DEC 25, 2026 • MIDNIGHT</p>
+        </div>
+        <div class="holiday-timer">
+          <div class="mini-box"><span class="mini-digit" id="xmas-days">--</span><span class="mini-label">Days</span></div>
+          <div class="mini-box"><span class="mini-digit" id="xmas-hours">--</span><span class="mini-label">Hrs</span></div>
+          <div class="mini-box"><span class="mini-digit" id="xmas-mins">--</span><span class="mini-label">Mins</span></div>
+          <div class="mini-box"><span class="mini-digit" id="xmas-secs" style="color:#F5E6C8;">--</span><span class="mini-label">Secs</span></div>
+        </div>
+      </section>
+
+      <!-- 3. NEW YEAR'S DAY -->
+      <section class="holiday-card">
+        <div class="holiday-header">
+          <span class="holiday-badge">New Year 2027</span>
+          <h2 class="holiday-title">NEW YEAR'S DAY</h2>
+          <p class="holiday-date">FRI, JAN 1, 2027 • MIDNIGHT</p>
+        </div>
+        <div class="holiday-timer">
+          <div class="mini-box"><span class="mini-digit" id="ny-days">--</span><span class="mini-label">Days</span></div>
+          <div class="mini-box"><span class="mini-digit" id="ny-hours">--</span><span class="mini-label">Hrs</span></div>
+          <div class="mini-box"><span class="mini-digit" id="ny-mins">--</span><span class="mini-label">Mins</span></div>
+          <div class="mini-box"><span class="mini-digit" id="ny-secs">--</span><span class="mini-label">Secs</span></div>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- BOTTOM HALF: PROMINENT MATCH DAY HERO -->
+    <section class="hero-match-card">
+      <div class="match-content">
+        <div class="match-header">
+          <span class="match-tag">National Resident Matching Program</span>
+          <h2 class="match-title">FSU COLLEGE OF MEDICINE MATCH DAY</h2>
+          <p class="match-subtitle">FRIDAY, MARCH 19, 2027 • 12:00:00 PM EDT (RESIDENCY REVEAL)</p>
+        </div>
+
+        <div class="hero-timer-grid">
+          <div>
+            <div class="hero-box"><span class="hero-digit" id="md-days">--</span></div>
+            <div class="hero-label">Days</div>
+          </div>
+          <div>
+            <div class="hero-box"><span class="hero-digit" id="md-hours">--</span></div>
+            <div class="hero-label">Hours</div>
+          </div>
+          <div>
+            <div class="hero-box"><span class="hero-digit" id="md-mins">--</span></div>
+            <div class="hero-label">Minutes</div>
+          </div>
+          <div class="unit-seconds">
+            <div class="hero-box unit-seconds"><span class="hero-digit" id="md-secs">--</span></div>
+            <div class="hero-label">Seconds</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SILHOUETTE CLIPART: MEDICAL STUDENT OPENING RESIDENCY ENVELOPE -->
+      <div class="match-art-container">
+        <svg class="envelope-svg" viewBox="0 0 240 280" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Glow Burst Behind Letter -->
+          <circle cx="120" cy="120" r="95" fill="url(#goldRadial)" opacity="0.32" />
+          
+          <!-- Stethoscope Silhouette draping over neck -->
+          <path d="M72 165 C68 190 76 220 95 235 C108 245 132 245 145 235 C164 220 172 190 168 165" stroke="#CEB888" stroke-width="4.5" stroke-linecap="round" fill="none" />
+          <circle cx="120" cy="242" r="7.5" fill="#CEB888" />
+
+          <!-- Student Head & Graduation Cap / Hair silhouette -->
+          <circle cx="120" cy="58" r="30" fill="#120407" stroke="#CEB888" stroke-width="2.5" />
+          
+          <!-- Shoulders Silhouette -->
+          <path d="M48 240 C52 195 80 165 120 165 C160 165 188 195 192 240 Z" fill="#120407" stroke="#CEB888" stroke-width="2.5" />
+
+          <!-- Match Day Envelope (Gold trimmed) -->
+          <rect x="75" y="115" width="90" height="60" rx="4" fill="#24070D" stroke="#CEB888" stroke-width="3" />
+          <!-- Envelope Open Flap -->
+          <polygon points="75,115 120,78 165,115" fill="#3D101A" stroke="#CEB888" stroke-width="2.5" />
+
+          <!-- The Match Letter Rising Out with Gold FSU Seal -->
+          <rect x="83" y="65" width="74" height="65" rx="3" fill="#FFF9ED" stroke="#CEB888" stroke-width="2" />
+          <!-- Mock Text Lines on Letter -->
+          <line x1="93" y1="80" x2="147" y2="80" stroke="#782F40" stroke-width="3" stroke-linecap="round" />
+          <line x1="93" y1="92" x2="137" y2="92" stroke="#B89758" stroke-width="2.5" stroke-linecap="round" />
+          <line x1="93" y1="102" x2="143" y2="102" stroke="#B89758" stroke-width="2.5" stroke-linecap="round" />
+          <circle cx="120" cy="118" r="6" fill="#782F40" />
+
+          <!-- Hands holding the envelope edges -->
+          <ellipse cx="72" cy="142" rx="11" ry="8" fill="#CEB888" transform="rotate(-15 72 142)" />
+          <ellipse cx="168" cy="142" rx="11" ry="8" fill="#CEB888" transform="rotate(15 168 142)" />
+
+          <!-- Sparkles / Confetti -->
+          <polygon points="45,85 49,95 59,99 49,103 45,113 41,103 31,99 41,95" fill="#F5E6C8" />
+          <polygon points="195,75 198,83 206,86 198,89 195,97 192,89 184,86 192,83" fill="#CEB888" />
+          <polygon points="175,40 178,46 184,48 178,50 175,56 172,50 166,48 172,46" fill="#F5E6C8" />
+
+          <defs>
+            <radialGradient id="goldRadial" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#F5E6C8" />
+              <stop offset="60%" stop-color="#CEB888" />
+              <stop offset="100%" stop-color="#CEB888" stop-opacity="0" />
+            </radialGradient>
+          </defs>
+        </svg>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <span>FSU COLLEGE OF MEDICINE • VIRES, ARTES, MORES</span>
+    <span>Auto-synced to America/New_York (Daytona Beach)</span>
+  </footer>
+
+  <script>
+    // Exact Target Epoch Timestamps (ISO-8601 with Eastern Time offset):
+    var BREAK_TARGET = new Date('2026-12-18T17:00:00-05:00').getTime();
+    var XMAS_TARGET  = new Date('2026-12-25T00:00:00-05:00').getTime();
+    var NY_TARGET    = new Date('2027-01-01T00:00:00-05:00').getTime();
+    var MATCH_TARGET = new Date('2027-03-19T12:00:00-04:00').getTime();
+
+    function formatNumber(n) {
+      return n < 10 ? '0' + n : '' + n;
+    }
+
+    function calculateDiff(targetTime, currentTime) {
+      var diff = targetTime - currentTime;
+      if (diff <= 0) {
+        return { d: '00', h: '00', m: '00', s: '00' };
+      }
+      var totalSeconds = Math.floor(diff / 1000);
+      var days = Math.floor(totalSeconds / 86400);
+      var rem = totalSeconds % 86400;
+      var hours = Math.floor(rem / 3600);
+      rem = rem % 3600;
+      var minutes = Math.floor(rem / 60);
+      var seconds = rem % 60;
+
+      return {
+        d: formatNumber(days),
+        h: formatNumber(hours),
+        m: formatNumber(minutes),
+        s: formatNumber(seconds)
+      };
+    }
+
+    function setUnitValues(prefix, values) {
+      var d = document.getElementById(prefix + '-days');
+      if (d) {
+        d.textContent = values.d;
+        document.getElementById(prefix + '-hours').textContent = values.h;
+        document.getElementById(prefix + '-mins').textContent = values.m;
+        document.getElementById(prefix + '-secs').textContent = values.s;
+      }
+    }
+
+    function refreshDisplay() {
+      var now = Date.now();
+
+      // Top 3 Timers
+      setUnitValues('break', calculateDiff(BREAK_TARGET, now));
+      setUnitValues('xmas', calculateDiff(XMAS_TARGET, now));
+      setUnitValues('ny', calculateDiff(NY_TARGET, now));
+
+      // Bottom Hero Timer
+      setUnitValues('md', calculateDiff(MATCH_TARGET, now));
+
+      // Header Clock
+      var elClock = document.getElementById('headerClock');
+      if (elClock) {
+        try {
+          var estString = new Date().toLocaleTimeString('en-US', {
+            timeZone: 'America/New_York',
+            hour12: true,
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit'
+          });
+          elClock.textContent = estString + ' ET';
+        } catch (err) {
+          var dt = new Date();
+          elClock.textContent = formatNumber(dt.getHours()) + ':' + formatNumber(dt.getMinutes()) + ':' + formatNumber(dt.getSeconds()) + ' ET';
+        }
+      }
+    }
+
+    function toggleFullScreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(function() {});
+      } else if (document.exitFullscreen) {
+        document.exitFullscreen();
+      }
+    }
+
+    refreshDisplay();
+    setInterval(refreshDisplay, 1000);
+  </script>
+</body>
+</html>
